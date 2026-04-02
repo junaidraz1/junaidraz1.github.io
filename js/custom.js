@@ -31,13 +31,12 @@
 		var navToggler = $('.navbar-toggler');
 		$(".smoothscroll[href^='#'], #pb-navbar ul li a[href^='#']").on('click', function (e) {
 			e.preventDefault();
-			var hash = this.hash;
+			var hash = this.hash; // should be #home, #portfolio, etc.
 
 			$('html, body').animate({
-
 				scrollTop: $(hash).offset().top
 			}, 700, 'easeInOutExpo', function () {
-				window.location.hash = hash;
+				window.location.hash = hash; // just use hash as-is
 			});
 		});
 		$("#pb-navbar ul li a[href^='#']").on('click', function (e) {
@@ -168,25 +167,25 @@
 
 	// Page Nav
 	var clickMenu = function () {
-
 		$('.navbar-nav a:not([class="external"])').click(function (event) {
-
-			var section = $(this).data('nav-section'),
-				navbar = $('.navbar-nav');
-			if (isMobile.any()) {
-				$('.navbar-toggle').click();
-			}
-			if ($('[data-section="' + section + '"]').length) {
+			var targetSection = $(this).data('nav-section');
+			if (targetSection && $('[data-section="' + targetSection + '"]').length) {
 				$('html, body').animate({
-					scrollTop: $('[data-section="' + section + '"]').offset().top
+					scrollTop: $('[data-section="' + targetSection + '"]').offset().top
 				}, 500, 'easeInOutExpo');
+
+				// update hash to match section ID exactly
+				window.location.hash = targetSection;
+			}
+
+			// Close navbar on mobile
+			if ($('.navbar-toggler').is(':visible')) {
+				$('.navbar-toggler').click();
 			}
 
 			event.preventDefault();
 			return false;
 		});
-
-
 	};
 
 	// Reflect scrolling in navigation
